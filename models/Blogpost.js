@@ -10,14 +10,13 @@ Blogpost.init(
         allowNull:false
     },
     content:{
-        type:DataTypes.STRING,
+        type:DataTypes.TEXT,
         allowNull:false
     },
 },{
     sequelize,
     timestamps: true,
     freezeTableName: true,
-    underscored: true,
     modelName: 'blogpost',
 }
 );

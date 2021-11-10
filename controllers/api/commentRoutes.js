@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const { Comment } = require("../../models");
-const withAuth = require('../../util/auth')
+const { Comment, User } = require("../../models");
+const withAuth = require('../../util/auth');
 
 // get all comments
 router.get("/", (req, res) => {
-  Comment.findAll()
+  Comment.findAll({
+    include:[{model:User}]
+  })
     .then(commentData => {
+      console.log(commentData)
       res.json(commentData);
     })
     .catch(err => {

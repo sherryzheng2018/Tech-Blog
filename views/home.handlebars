@@ -1,7 +1,9 @@
+
 <div class="cardContainer">
     {{#each blogposts}}
     <a class="card" href="/blogposts/{{id}}">
         <h3>{{title}}</h3>
+        <p>{{user.username}}</p>
         <p>{{content}}</p>
     </a>
     {{/each}}

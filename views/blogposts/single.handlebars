@@ -1,0 +1,13 @@
+<div class="cardContainer">
+    <div class="card">
+        <h3>{{hbsData.title}}</h3>
+        <p>{{hbsData.content}}</p>
+    </div>
+
+    {{#each hbsData.comments}}
+    <div>
+        <p class="comment">{{comment}}</p>
+        <p class="commentUser">{{user.username}} {{user.createdAt}}</p>
+    </div>
+    {{/each}}
+</div>

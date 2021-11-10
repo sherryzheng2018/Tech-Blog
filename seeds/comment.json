@@ -1,18 +1,42 @@
 [
     {
         "comment":"This is a great post! Very impresive!",
-        "UserId":"1"
+        "blogpostId":1,
+        "userId":1
     },
     {
         "comment":"Useful post, thanks for sharing!",
-        "UserId":"2"
+        "blogpostId":2,
+        "userId":2
     },
     {
         "comment":"Nice info!",
-        "UserId":"3"
+        "BlogpostId":3,
+        "userId":3
     },
     {
         "comment":"Amazing write-up!",
-        "UserId":"4"
+        "blogpostId":4,
+        "userId":4
     },
+    {
+        "comment":"This is a great post! Very impresive!",
+        "blogpostId":5,
+        "userId":5
+    },
+    {
+        "comment":"Useful post, thanks for sharing!",
+        "blogpostId":6,
+        "userId":6
+    },
+    {
+        "comment":"Nice info!",
+        "blogpostId":7,
+        "userId":7
+    },
+    {
+        "comment":"Amazing write-up!",
+        "blogpostId":8,
+        "userId":8
+    }
 ]

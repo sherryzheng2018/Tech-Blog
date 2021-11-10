@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Blogpost,User} = require('../../models');
+const {Blogpost,User, Comment} = require('../../models');
 
 // get all blog posts
 router.get("/",(req,res)=>{
@@ -14,7 +14,13 @@ router.get("/",(req,res)=>{
 
 // get blog posts by id
 router.get("/:id",(req,res)=>{
-    Blogpost.findByPk(req.params.id).then(singleBlog=>{
+    Blogpost.findByPk(req.params.id,{
+        include:[{model:Comment,
+            include:[{
+                model: User,
+            }]
+        }]
+    }).then(singleBlog=>{
         if(singleBlog){
             res.json(singleBlog)
         } else {

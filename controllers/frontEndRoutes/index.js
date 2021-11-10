@@ -7,12 +7,13 @@ const withAuth = require('../../util/auth')
 
 // get all blog posts
 router.get("/",(req,res)=>{
-    Blogpost.findAll().then(blogData=>{
-        console.log(blogData)
+    Blogpost.findAll({
+        include:[{model:User}]
+    }).then(blogData=>{
         console.log("=================")
         const hbsLCData = blogData.map(item=>item.get({plain:true}))
         // console.log(hbsLCData)
-        return res.render("home",{
+        res.render("home",{
             blogposts:hbsLCData
         })
     })
@@ -21,14 +22,16 @@ router.get("/",(req,res)=>{
 // get blog post by id
 router.get("/blogposts/:id", (req,res)=>{
     Blogpost.findByPk(req.params.id,{
-        include:[{
-            model:Comment,
-            include:[User]
+        include:[{model:Comment,
+            include:[{
+                model: User,
+            }]
         }]
     }).then(blogData=>{
         const hbsData = blogData.get({plain:true})
-        // console.log(hbsData);
-        res.render("blogposts/single",hbsData);
+        // console.log(hbsData.comments);
+        res.render("blogposts/single",
+        {hbsData:hbsData});
     })
 })
 
@@ -49,6 +52,11 @@ router.get("/login",(req,res)=>{
         return res.redirect(`/`)
     }
    return  res.render("login")
+})
+
+router.get('*',(req,res)=>{
+    console.log("11111111111")
+    res.redirect("/")
 })
 
 module.exports = router;

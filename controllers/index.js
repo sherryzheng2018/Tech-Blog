@@ -6,9 +6,7 @@ const appRoutes = require("./frontEndRoutes")
 
 router.use("/api",apiRoutes)
 router.use("/",appRoutes)
-router.get('*',(req,res)=>{
-    return res.redirect("/")
-})
+
 router.get("/sessions",(req,res)=>{
     res.json(req.session)
 })

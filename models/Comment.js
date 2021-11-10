@@ -9,7 +9,10 @@ Comment.init({
         allowNull:false
     }
 },{
-    sequelize
+    sequelize,
+    timestamps: true,
+    freezeTableName: true,
+    modelName: 'comment',
 });
 
 module.exports = Comment
