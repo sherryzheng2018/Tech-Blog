@@ -8,13 +8,13 @@ const seedMe = async ()=>{
     await sequelize.sync({force:true});
     
     await Blogpost.bulkCreate(blogpost);
-    console.log('seeded blogs!')
+    console.log('\n-----seeded blogs!-----\n')
 
     await User.bulkCreate(userData,{individualHooks:true});
-    console.log('seeded users!')
+    console.log('\n-----seeded users!-----\n')
 
     await Comment.bulkCreate(commentData);
-    console.log('seeded comments!')
+    console.log('\n-----seeded comments!-----\n')
     process.exit(0);
 }
 

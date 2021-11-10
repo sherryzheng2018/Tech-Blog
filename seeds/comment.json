@@ -1,0 +1,18 @@
+[
+    {
+        "comment":"This is a great post! Very impresive!",
+        "UserId":"1"
+    },
+    {
+        "comment":"Useful post, thanks for sharing!",
+        "UserId":"2"
+    },
+    {
+        "comment":"Nice info!",
+        "UserId":"3"
+    },
+    {
+        "comment":"Amazing write-up!",
+        "UserId":"4"
+    },
+]

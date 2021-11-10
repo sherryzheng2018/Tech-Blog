@@ -15,9 +15,15 @@
     <nav>
         <a href="/">Home</a>
         <a href="/flavors">Dashboard</a>
+        {{#if user}}
+        <a href="/flavors">Login</a>
+        {{/if}}
         <a href="/api/users/logout">logout</a>
     </nav>
     <h1>The Tech Blog</h1>
+    {{!-- {{#if userpage}} --}}
+    <h1>Your Dashboard</h1>
+    {{!-- {{/if}} --}}
     </header>
 
     {{{body}}}

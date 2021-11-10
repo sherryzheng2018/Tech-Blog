@@ -4,8 +4,8 @@ const {Blogpost,User} = require('../../models');
 
 // get all blog posts
 router.get("/",(req,res)=>{
-    Blogpost.findAll().then(laCroixData=>{
-        res.json(laCroixData)
+    Blogpost.findAll().then(blogData=>{
+        res.json(blogData)
     }).catch(err=>{
         console.log(err);
         res.status(500).json({err})
@@ -26,11 +26,12 @@ router.get("/:id",(req,res)=>{
     })
 })
 
-// create new blog post
+// create a new blog post
 router.post("/",(req,res)=>{
     Blogpost.create({
         title:req.body.title,
-        content:req.body.content
+        content:req.body.content,
+        userId: req.session.user.id
     }).then(newPost=>{
         res.json(newPost)
     }).catch(err=>{
@@ -39,31 +40,18 @@ router.post("/",(req,res)=>{
     })
 })
 
-// create a new blog by id
-router.post("/blogpost/:id",(req,res)=>{
-    if(!req.session.user){
-        return res.status(403).json({err:"not logged in!"})
-    }
-    User.findByPk(req.session.user.id).then(loggedInUser=>{
-        loggedInUser.addFavorite(req.params.id).then(result=>{
-           res.json(result)
-        }).catch(err=>{
-            console.log(err);
-            res.status(500).json({err})
-        })
-    })
-})
 
-router.delete("/blog/:id",(req,res)=>{
+// delete a post by blog id
+router.delete("/:id",(req,res)=>{
     if(!req.session.user){
-        return res.status(403).json({err:"not logged in!"})
+        return res.status(403).json({err:"Please login first!"})
     }
     User.findByPk(req.session.user.id).then(loggedInUser=>{
-        loggedInUser.removeFavorite(req.params.id).then(result=>{
+        loggedInUser.removeBlog(req.params.id).then(result=>{
             if(result){
                 return res.json(result);
             } else {
-                return res.status(404).json({msg:"not favorited"})
+                return res.status(404).json({msg:"No blog"})
             }
         }).catch(err=>{
             console.log(err);
@@ -72,19 +60,21 @@ router.delete("/blog/:id",(req,res)=>{
     })
 })
 
+// update a blog by id
 router.put("/:id",(req,res)=>{
-    LaCroix.update({
-        flavor:req.body.flavor,
-        image:req.body.image
+    Blogpost.update({
+        title:req.body.title,
+        content:req.body.content
     },{
         where:{
-            id:req.params.id
+            id:req.params.id,
+            userId:req.session.user.id
         }
     }).then(updatedData=>{
         if(updatedData[0]){
             res.json(updatedData)
         } else {
-            res.status(404).json({err:"no such flavor found!"})
+            res.status(404).json({err:"no such blog found!"})
         }
     }).catch(err=>{
         console.log(err);
@@ -92,21 +82,22 @@ router.put("/:id",(req,res)=>{
     })
 })
 
-router.delete("/:id",(req,res)=>{
-    LaCroix.destroy({
-        where:{
-            id:req.params.id
-        }
-    }).then(deletedLacroix=>{
-        if(deletedLacroix){
-            res.json(deletedLacroix)
-        } else {
-            res.status(404).json({err:"no such flavor found!"})
-        }
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({err})
-    })
-})
+// delte a post by id
+// router.delete("/:id",(req,res)=>{
+//     Blogpost.destroy({
+//         where:{
+//             id:req.params.id
+//         }
+//     }).then(deletedBlog=>{
+//         if(deletedBlog){
+//             res.json(deletedBlog)
+//         } else {
+//             res.status(404).json({err:"no such blog found!"})
+//         }
+//     }).catch(err=>{
+//         console.log(err);
+//         res.status(500).json({err})
+//     })
+// })
 
 module.exports = router;

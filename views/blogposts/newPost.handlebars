@@ -1,0 +1,23 @@
+<div class="newPost">
+
+    <div class="card">
+        <h2 href="/blogposts/{{Blogpost.id}}">{{Blogpost.title}}</h2 >
+        <p>{{Blogpost.content}}</p>
+    </div>
+
+</div>
+
+<div>
+    <button id="add-post">+ New Post</button>
+</div>
+
+<div>
+    <h1>Create New Post</h1>
+    <form action="">
+        <label for="postTitle">Title</label>
+        <input type="text" id="postTitle" name="postTitle"><br>
+        <label for="postContent">content</label>
+        <input type="text" id="postContent" name="postContent"><br>
+        <input type="submit" value="Create">
+    </form>
+</div>

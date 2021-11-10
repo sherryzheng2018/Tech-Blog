@@ -1,72 +1,147 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {User,Blog,Group} = require('../../models');
+const { User } = require("../../models");
 const bcrypt = require("bcrypt");
 
-router.get("/",(req,res)=>{
-    User.findAll({
-        include:[Pet,Group]
-    }).then(dbUsers=>{
-        if(dbUsers.length){
-            res.json(dbUsers)
-        } else {
-            res.status(404).json({message:"No users found!"})
-        }
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({message:"an error occured",err:err})
+// get all users
+router.get("/", (req, res) => {
+  User.findAll()
+    .then(UserData => {
+      res.json(UserData);
     })
-})
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ err });
+    });
+});
 
-router.post("/",(req,res)=>{
-    // const encryptedPassword = bcrypt.hashSync(req.body.password,3);
-    User.create({
-        username:req.body.username,
-        // password:encryptedPassword,
-        password:req.body.password,
-        email:req.body.email
-    }).then(newUser=>{
-        res.json(newUser);
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({message:"an error occured",err:err})
-    })
-})
+// logout user
+router.post("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/');
+  });
+});
 
-router.post("/login",(req,res)=>{
-    User.findOne({
-        where:{
-            email:req.body.email
-        }
-    }).then(foundUser=>{
-        if(!foundUser){
-            res.status(401).json({message:"incorrect email or password"})
-        } else {
-            if(bcrypt.compareSync(req.body.password,foundUser.password)){
-                req.session.user = {
-                    username:foundUser.username,
-                    email:foundUser.email,
-                    id:foundUser.id
-                }
-                res.json(foundUser)
-            } else {
-                res.status(401).json({message:"incorrect email or password"})
-            }
-        }
-    }).catch(err=>{
-         console.log(err);
-        res.status(500).json(err);
+// get user by id
+router.get("/:id", (req, res) => {
+  User.findByPk(req.params.id)
+    .then(singleUser => {
+      if (singleUser) {
+        res.json(singleUser);
+      } else {
+        res.status(404).json({ err: "no such user found!" });
+      }
     })
-})
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ err });
+    });
+});
 
-router.delete("/:id",(req,res)=>{
-    User.destroy({
-        where:{
-            id:req.params.id
-        }
-    }).then(delUser=>{
-        res.json(delUser)
+// create a new user
+router.post("/", (req, res) => {
+  User.create({
+    username: req.body.username,
+    password: req.body.password
+  })
+    .then(newUser => {
+      req.session.user = {
+        id: newUser.id,
+        username: newUser.username
+      };
+      res.json(newUser);
     })
-})
+    .catch(err => {
+      console.log(err);
+      req.session.destroy(()=>{
+        res.status(500).json({ err });
+      })
+    });
+});
+
+
+router.post("/login", (req, res) => {
+  User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+    .then(foundUser => {
+      if (!foundUser) {
+        return req.session.destroy(() => {
+          return res.status(401).json({ err: "invalid username/password" });
+        });
+      }
+      if (!req.body.password) {
+        return req.session.destroy(() => {
+          return res.status(401).json({ err: "invalid username/password" });
+        });
+      }
+      if (bcrypt.compareSync(req.body.password, foundUser.password)) {
+        req.session.user = {
+          id: foundUser.id,
+          username: foundUser.username
+        };
+        return res.json({
+          id:foundUser.id,
+          username:foundUser.username,
+        });
+      } else {
+        return req.session.destroy(() => {
+          return res.status(401).json({ err: "invalid username/password" });
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ err });
+    });
+});
+
+// update user by id
+router.put("/:id", (req, res) => {
+  User.update(
+    {
+      username: req.body.username,
+      password: req.body.password
+    },
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  )
+    .then(updatedData => {
+      if (updatedData[0]) {
+        res.json(updatedData);
+      } else {
+        res.status(404).json({ err: "no such user found!" });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ err });
+    });
+});
+
+// delete user by id
+router.delete("/:id", (req, res) => {
+  User.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(deletedUser => {
+      if (deletedUser) {
+        res.json(deletedUser);
+      } else {
+        res.status(404).json({ err: "no such user found!" });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ err });
+    });
+});
 
 module.exports = router;
