@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a CMS-style blog that allows you to publish articles, blog posts, and your own thoughts and opinions. This app follows the MVC paradigm in its architectural structure, using `Handlebars.js` as the templating language, `Sequeliz`e as the ORM, and the `express-session` npm package for authentication.
+This is a CMS-style blog that allows you to publish articles, blog posts, and your own thoughts and opinions. This app follows the MVC paradigm in its architectural structure, using `Handlebars.js` as the templating language, `Sequelize` as the ORM, and the `express-session` npm package for authentication.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
