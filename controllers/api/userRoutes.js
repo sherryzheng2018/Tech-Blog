@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 // logout user
 router.post("/logout", (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/');
+    res.status(200).json('logged out!')
   });
 });
 
@@ -45,9 +45,10 @@ router.post("/", (req, res) => {
     password: req.body.password
   })
     .then(newUser => {
+      req.session.logged_in = true
       req.session.user = {
         id: newUser.id,
-        username: newUser.username
+        username: newUser.username,
       };
       res.json(newUser);
     })
@@ -69,11 +70,13 @@ router.post("/login", (req, res) => {
     .then(foundUser => {
       if (!foundUser) {
         return req.session.destroy(() => {
+          console.log(1)
           return res.status(401).json({ err: "invalid username/password" });
         });
       }
       if (!req.body.password) {
         return req.session.destroy(() => {
+          console.log(2)
           return res.status(401).json({ err: "invalid username/password" });
         });
       }
@@ -89,6 +92,7 @@ router.post("/login", (req, res) => {
         });
       } else {
         return req.session.destroy(() => {
+          console.log(3)
           return res.status(401).json({ err: "invalid username/password" });
         });
       }

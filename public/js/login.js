@@ -12,7 +12,8 @@ document.querySelector("form#login").addEventListener("submit",(e)=>{
         }
     }).then(res=>{
         if(!res.ok){
-            return alert("trumpet sound")
+
+            return alert("login failed")
         } else {
             res.json().then(data=>{
                 location.href = `/dashboard/${data.id}`
@@ -35,7 +36,7 @@ document.querySelector("form#signup").addEventListener("submit",(e)=>{
         }
     }).then(res=>{
         if(!res.ok){
-            return alert("trumpet sound")
+            return alert("sign up failed")
         } else {
             res.json().then(data=>{
                 location.href = `/dashboard/${data.id}`

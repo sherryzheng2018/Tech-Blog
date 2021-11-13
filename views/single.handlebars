@@ -2,19 +2,16 @@
 <div class="card">
     <div class="card-header bg-warning text-white d-flex">
             <div class="h4 col-8">{{hbsData.title}}</div>
-            <div class="row col-4">Posed by {{hbsData.user.username}} on {{hbsData.createdAt}}</div>
+            <div class="row col-4">Posed by {{hbsData.user.username}} on {{dateFormatterHelper hbsData.createdAt}}</div>
     </div>
     <div class="card-body">
         {{hbsData.content}}
     </div>
 </div>
 
-        {{!-- <div class="d-flex bg-warning text-white" style="height: 5rem;"> --}}
-
 {{!-- previous comment section --}}
 
 <div class="card my-2">
-    
     <div class="card-header bg-light">
     {{#each hbsData.comments}}
         <div class="card-body">
@@ -22,7 +19,7 @@
                 {{comment}}
             </div>
             <small class="row text-muted">
-                Comented by {{user.username}} on {{user.createdAt}} 
+                Comented by {{user.username}} on {{dateFormatterHelper user.createdAt}} 
             </small>
         </div>
     {{/each}}            

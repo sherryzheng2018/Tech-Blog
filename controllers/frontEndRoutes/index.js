@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const {User,Comment,Blogpost}  = require("../../models");
 const withAuth = require('../../util/auth')
-const moment = require('moment')
+const dateFormatterHelper = require('../../util/dateUtil')
+
 
 
 
 // get all blog posts
 router.get("/",(req,res)=>{
+    console.log(req.session.user)
+    console.log(1111111111111111111111111111)
     Blogpost.findAll({
         include:[{model:User}]
     }).then(blogData=>{
@@ -15,7 +18,10 @@ router.get("/",(req,res)=>{
         const hbsLCData = blogData.map(item=>item.get({plain:true}))
         // console.log(hbsLCData)
         res.render("home",{
-            blogposts:hbsLCData
+            blogposts:hbsLCData,
+            helpers: {
+                dateFormatterHelper
+              }
         })
     })
 })
@@ -38,7 +44,12 @@ router.get("/blogposts/:id", (req,res)=>{
     }).then(blogData=>{
         const hbsData = blogData.get({plain:true})
         // console.log(hbsData);
-        res.render("single",{hbsData:hbsData});
+        res.render("single",{
+            hbsData:hbsData,
+            helpers: {
+                dateFormatterHelper
+              }
+        });
     })
 })
 
@@ -70,6 +81,8 @@ router.get("/blogposts/:id/edit", (req,res)=>{
 
 // get user profile 
 router.get("/dashboard", withAuth, (req,res)=>{
+    console.log(req.session.user.id)
+    console.log(1111111111111111111111111111)
     User.findByPk(req.session.user.id,{
         include:[Blogpost]
     }).then(userData=>{
@@ -78,7 +91,10 @@ router.get("/dashboard", withAuth, (req,res)=>{
         res.render("home",{
             blogposts:hbsData.blogposts,
             isSelf: true,
-            isDashboard: true
+            isDashboard: true,
+            helpers: {
+                dateFormatterHelper
+              }
         });
     })
 })
