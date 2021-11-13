@@ -36,21 +36,30 @@ router.get("/:id", (req, res) => {
 
 // create new comment
 router.post("/", withAuth, (req, res) => {
+
   if (!req.session.user) {
     return res.status(403).json({ err: "Please login first" });
-  }
-  Comment.create({
+  } 
+  try{
+      Comment.create({
     comment: req.body.comment,
     userId: req.session.user.id,
-    blogPostId: req.body.blogPostId 
+    blogpostId: req.body.blogpostId 
   })
     .then(newComment => {
-      res.json(newComment);
+
+      res.status(200).json(newComment);
     })
     .catch(err => {
       console.log(err);
       res.status(500).json({ err });
     });
+
+  }catch(e){
+    
+    res.json('fail')
+  }
+
 });
 
 // update a comment by id

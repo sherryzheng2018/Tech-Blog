@@ -1,18 +1,40 @@
-<h1>Login</h1>
-<form id="login">
-    <input type="text" id="login-username" placeholder="username">
-    <input type="password" id="login-password" placeholder="password">
-    <button>Login!</button>
-    <a href="#signup-instead">Sign up Instead</a>
+
+<div class="card card-header">
+<form class="row g-3" id="login">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="login-username" aria-describedby="username" placeholder="Username">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="login-password" placeholder="Password">
+  </div>
+  <div class="col-12 d-grid gap-2">
+    <button id="login" type="submit" class="btn btn-warning">Submit</button>
+  </div>
+  
 </form>
+</div>
+
+<div>
+    <small class="or-seperator">Do not have an account? Sign up instead!</small>
+</div>
 
 
-<div id="signup-instead">
-    <h1>Sign Up</h1>
-    <form id="signup">
-        <input type="text" id="signup-username" placeholder="username">
-        <input type="password" id="signup-password" placeholder="password">
-        <button>Sign Up!</button>
-    </form>
+<div class="card card-header">
+<form class="row g-3" id="signup">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="signup-password" aria-describedby="username" placeholder="Username">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="signup-username" placeholder="Password">
+  </div>
+  <div class="col-12 d-grid gap-2">
+    <button id="signup" type="submit" class="btn btn-warning">Sign Up</button>
+  </div>
+</form>
 </div>
 <script src="/js/login.js"></script>
+

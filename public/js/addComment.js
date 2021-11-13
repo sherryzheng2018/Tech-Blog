@@ -1,11 +1,11 @@
-document.querySelector("#add-comment").addEventListener("submit",evt=>{
+document.querySelector("#comment").addEventListener("submit",evt=>{
     evt.preventDefault();
     const fetchObj = {
-        blog:document.querySelector("#blog-id").value,
-        comment:document.querySelector("#comment").value,
+        comment:document.querySelector("#addComment").value,
+        blogpostId:document.querySelector("#blogpostId").value,
     }
     console.log(fetchObj);
-    fetch("/api/comment",{
+    fetch("/api/comments",{
         method:"POST",
         body:JSON.stringify(fetchObj),
         headers:{
@@ -13,9 +13,9 @@ document.querySelector("#add-comment").addEventListener("submit",evt=>{
         }
     }).then(res=>{
         if(res.ok){
-           location.href="/"
+           location.reload()
         } else {
-            alert("trumpet sound")
+            alert("add comment failed!")
         }
     })
 })

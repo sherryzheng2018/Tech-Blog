@@ -52,17 +52,17 @@ router.delete("/:id",(req,res)=>{
     if(!req.session.user){
         return res.status(403).json({err:"Please login first!"})
     }
-    User.findByPk(req.session.user.id).then(loggedInUser=>{
-        loggedInUser.removeBlog(req.params.id).then(result=>{
-            if(result){
-                return res.json(result);
-            } else {
-                return res.status(404).json({msg:"No blog"})
-            }
-        }).catch(err=>{
-            console.log(err);
-            res.status(500).json({err})
-        })
+    Blogpost.destroy({
+        where:{
+            id:req.params.id
+        }
+    }).then(blogDeleted=>{
+        
+        if(blogDeleted){
+            return res.status(200).json("success");
+        } else {
+            return res.status(404).json({msg:"No blog"})
+        }
     })
 })
 

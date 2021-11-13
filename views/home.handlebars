@@ -1,10 +1,33 @@
-
-<div class="cardContainer">
+<div>
+    {{#if isDashboard}}
     {{#each blogposts}}
-    <a class="card" href="/blogposts/{{id}}">
-        <h3>{{title}}</h3>
-        <p>{{user.username}}</p>
-        <p>{{content}}</p>
-    </a>
+    <div class="card my-2 border border-warning">
+        <a class="card-header text-decoration-none text-white bg-warning" href="/blogposts/{{id}}/edit">
+            <h4>{{title}}</h4>
+            <small class="text-muted-white">
+                Posted by {{user.username}} on {{createdAt}}
+            </small>
+        </a>
+        <p class="card-body font-weight-normal mb-2 ">{{content}}</p>
+    </div> 
     {{/each}}
+    {{else}}
+    {{#each blogposts}}
+    <div class="card my-2 border border-warning">
+        <a class="card-header text-decoration-none text-white bg-warning" href="/blogposts/{{id}}">
+            <h4>{{title}}</h4>
+            <small class="text-muted-white">
+                Posted by {{user.username}} on {{createdAt}}
+            </small>
+        </a>
+        <p class="card-body font-weight-normal mb-2 ">{{content}}</p>
+    </div> 
+    {{/each}}
+    {{/if}}
 </div>
+
+{{#if isSelf}}
+<div class="d-flex-center">
+    <a class="btn btn-warning fixed-bottom mb-3" href="/newPost" role="button">Add New Post</a>
+</div>
+{{/if}}

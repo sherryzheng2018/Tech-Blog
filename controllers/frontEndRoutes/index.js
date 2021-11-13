@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {User,Comment,Blogpost}  = require("../../models");
 const withAuth = require('../../util/auth')
+const moment = require('moment')
 
 
 
@@ -22,16 +23,48 @@ router.get("/",(req,res)=>{
 // get blog post by id
 router.get("/blogposts/:id", (req,res)=>{
     Blogpost.findByPk(req.params.id,{
-        include:[{model:Comment,
-            include:[{
-                model: User,
-            }]
-        }]
+        include:[
+            {
+                model:Comment,
+                include:[{
+                    model: User,
+                }]
+            },
+            {
+                model:User,
+                attributes: { exclude: ['password'] },
+            }
+    ]
     }).then(blogData=>{
         const hbsData = blogData.get({plain:true})
-        // console.log(hbsData.comments);
-        res.render("blogposts/single",
-        {hbsData:hbsData});
+        // console.log(hbsData);
+        res.render("single",{hbsData:hbsData});
+    })
+})
+
+// update post
+router.get("/blogposts/:id/edit", (req,res)=>{
+    Blogpost.findByPk(req.params.id,{
+        include:[
+            {
+                model:Comment,
+                include:[{
+                    model: User,
+                }]
+            },
+            {
+                model:User,
+                attributes: { exclude: ['password'] },
+            }
+    ]
+    }).then(blogData=>{
+        const hbsData = blogData.get({plain:true})
+        console.log(hbsData.title);
+        res.render("newPost",{
+            hbsData:hbsData,
+            isEdit: true,
+            formId: "editPost"
+        });
     })
 })
 
@@ -41,9 +74,19 @@ router.get("/dashboard", withAuth, (req,res)=>{
         include:[Blogpost]
     }).then(userData=>{
         const hbsData = userData.get({plain:true})
-        // console.log(hbsData);
-        res.render("dashboard",hbsData);
+        console.log(hbsData);
+        res.render("home",{
+            blogposts:hbsData.blogposts,
+            isSelf: true,
+            isDashboard: true
+        });
     })
+})
+
+router.get("/newpost", withAuth, (req,res)=>{
+
+res.render("newPost", {formId:"createPost"});
+    
 })
 
 
@@ -55,7 +98,6 @@ router.get("/login",(req,res)=>{
 })
 
 router.get('*',(req,res)=>{
-    console.log("11111111111")
     res.redirect("/")
 })
 
